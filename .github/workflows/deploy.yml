@@ -3,8 +3,6 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
 
 permissions:
@@ -27,13 +25,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
           
       - name: Install dependencies
-        run: npm install
-        
+        run: |
+          npm install
+          
       - name: Build Next.js
-        run: npm run build
+        run: |
+          npm run build
+          ls -la dist/
         
       - name: Add .nojekyll
         run: touch ./dist/.nojekyll
