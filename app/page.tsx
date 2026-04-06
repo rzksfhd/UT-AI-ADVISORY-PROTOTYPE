@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Send, Bot, User, Calculator, FileText, BookOpen, Sparkles, Menu, X, ChevronRight, Info } from 'lucide-react'
+import { Send, Bot, User, Calculator, FileText, BookOpen, Sparkles, Menu, X, ChevronRight, Info, Download, FileJson, Printer } from 'lucide-react'
 
 // Mock AI responses based on tax regulations
 const mockAIResponses: Record<string, string> = {
@@ -573,6 +573,76 @@ function TaxCalculator() {
   )
 }
 
+// Export functions for DJP Online
+function exportToCSV(formData: any, docType: string) {
+  const npwpPemotong = "001234567890123" // NPWP Universitas Terbuka (placeholder)
+  const namaPemotong = "UNIVERSITAS TERBUKA"
+  const kodeObjek = docType === 'pph21' ? "21-100-01" : "23-100-01"
+  const tarif = docType === 'pph21' ? 5 : 2
+  const jumlahBruto = parseInt(formData.jumlah) || 0
+  const pphDipotong = Math.round(jumlahBruto * (tarif / 100))
+  const [bulan, tahun] = (formData.masa || "01/2026").split("/")
+  
+  const csvContent = [
+    "NPWP_Pemotong,Nama_Pemotong,NPWP_Penerima,Nama_Penerima,Kode_Objek_Pajak,Jumlah_Bruto,Tarif,PPh_Dipotong,Masa_Pajak,Tahun_Pajak,Nomor_Bukti_Potong,Tanggal_Bukti_Potong",
+    `${npwpPemotong},${namaPemotong},${formData.npwp || "009876543210987"},${formData.nama || "NAMA PENERIMA"},${kodeObjek},${jumlahBruto},${tarif},${pphDipotong},${bulan || "01"},${tahun || "2026"},${formData.nomor || "001/${docType === 'pph21' ? 'PPH21' : 'PPH23'}/${bulan || '01'}/${tahun || '2026'}},${new Date().toISOString().split('T')[0]}`
+  ].join("\n")
+  
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+  const link = document.createElement("a")
+  const url = URL.createObjectURL(blob)
+  link.setAttribute("href", url)
+  link.setAttribute("download", `ebupot_${docType}_${formData.nama || 'export'}.csv`)
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
+
+function exportToJSON(formData: any, docType: string) {
+  const tarif = docType === 'pph21' ? 5 : 2
+  const jumlahBruto = parseInt(formData.jumlah) || 0
+  const pphDipotong = Math.round(jumlahBruto * (tarif / 100))
+  const [bulan, tahun] = (formData.masa || "01/2026").split("/")
+  
+  const jsonData = {
+    buktiPotong: {
+      jenisPajak: docType === 'pph21' ? "PPH21_FINAL" : "PPH23",
+      pemotong: {
+        npwp: "001234567890123",
+        nama: "UNIVERSITAS TERBUKA"
+      },
+      penerima: {
+        npwp: formData.npwp || "009876543210987",
+        nama: formData.nama || "NAMA PENERIMA"
+      },
+      detail: {
+        kodeObjekPajak: docType === 'pph21' ? "21-100-01" : "23-100-01",
+        jumlahBruto: jumlahBruto,
+        tarif: tarif,
+        pphDipotong: pphDipotong
+      },
+      periode: {
+        masa: bulan || "01",
+        tahun: tahun || "2026"
+      },
+      metadata: {
+        nomorBukti: formData.nomor || `001/${docType === 'pph21' ? 'PPH21' : 'PPH23'}/${bulan || '01'}/${tahun || '2026'}`,
+        tanggal: new Date().toISOString().split('T')[0],
+        exportedAt: new Date().toISOString()
+      }
+    }
+  }
+  
+  const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' })
+  const link = document.createElement("a")
+  const url = URL.createObjectURL(blob)
+  link.setAttribute("href", url)
+  link.setAttribute("download", `ebupot_${docType}_${formData.nama || 'export'}.json`)
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
+
 // Document Generator Component
 function DocumentGenerator() {
   const [docType, setDocType] = useState('pph21')
@@ -733,13 +803,36 @@ function DocumentGenerator() {
                 </div>
               </div>
 
-              <div className="flex gap-3">
-                <button className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm transition-colors">
-                  Download PDF
+              <div className="flex gap-2 flex-wrap">
+                <button 
+                  onClick={() => exportToCSV(formData, docType)}
+                  className="flex-1 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-1"
+                >
+                  <Download size={14} />
+                  Export CSV (DJP)
                 </button>
-                <button className="flex-1 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium text-sm transition-colors">
+                <button 
+                  onClick={() => exportToJSON(formData, docType)}
+                  className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm transition-colors"
+                >
+                  <FileJson size={14} className="inline mr-1"/>
+                  JSON
+                </button>
+                <button 
+                  onClick={() => window.print()}
+                  className="flex-1 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium text-sm transition-colors"
+                >
+                  <Printer size={14} className="inline mr-1"/>
                   Print
                 </button>
+              </div>
+              
+              <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p className="text-xs text-yellow-800">
+                  <strong>⚠️ Penting:</strong> File CSV ini siap di-import ke DJP Online (e-Bupot). 
+                  Login ke <a href="https://djponline.pajak.go.id" target="_blank" className="underline">djponline.pajak.go.id</a> → e-Bupot → Import CSV.
+                  Bukti potong resmi hanya dapat diterbitkan oleh DJP.
+                </p>
               </div>
 
               <p className="text-xs text-gray-500 mt-4">
