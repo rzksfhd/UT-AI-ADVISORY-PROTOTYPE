@@ -131,7 +131,7 @@ npm run export
 
 ## 📁 File Download
 
-**Prototype ZIP:** [Download dari R2](https://pub-5eb7e3c34157b7d9330be03c225d173a.r2.dev/advisory/UT-AI-ADVISORY-PROTOTYPE.zip)
+**Prototype ZIP:** [Download](https://tahutek.web.id/advisory/UT-AI-ADVISORY-PROTOTYPE.zip)
 
 Atau download dari folder lokal:
 ```

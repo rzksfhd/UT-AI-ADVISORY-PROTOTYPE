@@ -181,7 +181,7 @@ wrangler pages deploy dist --project-name=ut-ai-advisory
 ```typescript
 // For assets in R2
 const getAssetUrl = (filename: string) => {
-  return `https://pub-5eb7e3c34157b7d9330be03c225d173a.r2.dev/advisory/${filename}`
+  return `https://tahutek.web.id/advisory/${filename}`
 }
 
 // Usage

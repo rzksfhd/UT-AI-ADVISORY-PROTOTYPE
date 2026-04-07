@@ -196,9 +196,9 @@ Dokumen lengkap proposal penelitian tersedia di Cloudflare R2:
 
 | Dokumen | Format | Link |
 |---------|--------|------|
-| Proposal Penelitian | Word (.docx) | [Download](https://pub-5eb7e3c34157b7d9330be03c225d173a.r2.dev/advisory/proposal-penelitian.docx) |
-| Rencana Anggaran Belanja | Excel (.xlsx) | [Download](https://pub-5eb7e3c34157b7d9330be03c225d173a.r2.dev/advisory/rencana-anggaran-belanja.xlsx) |
-| Technical Plan | Markdown | [View](https://pub-5eb7e3c34157b7d9330be03c225d173a.r2.dev/advisory/plan.md) |
+| Proposal Penelitian | Word (.docx) | [Download](https://tahutek.web.id/advisory/proposal-penelitian.docx) |
+| Rencana Anggaran Belanja | Excel (.xlsx) | [Download](https://tahutek.web.id/advisory/rencana-anggaran-belanja.xlsx) |
+| Technical Plan | Markdown | [View](https://tahutek.web.id/advisory/plan.md) |
 
 **Total Anggaran:** Rp 89.090.000 (di bawah maksimal Rp 100.000.000)
 

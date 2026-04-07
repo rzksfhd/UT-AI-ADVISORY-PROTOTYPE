@@ -4,7 +4,7 @@
 const R2_CONFIG = {
   accountId: '5eb7e3c34157b7d9330be03c225d173a',
   bucketName: 'paperclip-hermes',
-  publicUrl: 'https://pub-5eb7e3c34157b7d9330be03c225d173a.r2.dev',
+  publicUrl: 'https://tahutek.web.id',
   folder: 'advisory'
 }
 
