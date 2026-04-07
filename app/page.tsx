@@ -583,9 +583,17 @@ function exportToCSV(formData: any, docType: string) {
   const pphDipotong = Math.round(jumlahBruto * (tarif / 100))
   const [bulan, tahun] = (formData.masa || "01/2026").split("/")
   
+  // Generate nomor bukti potong
+  const jenisPajak = docType === 'pph21' ? 'PPH21' : 'PPH23'
+  const bln = bulan || "01"
+  const thn = tahun || "2026"
+  const defaultNomor = `001/${jenisPajak}/${bln}/${thn}`
+  const nomorBukti = formData.nomor || defaultNomor
+  const tanggalBukti = new Date().toISOString().split('T')[0]
+  
   const csvContent = [
     "NPWP_Pemotong,Nama_Pemotong,NPWP_Penerima,Nama_Penerima,Kode_Objek_Pajak,Jumlah_Bruto,Tarif,PPh_Dipotong,Masa_Pajak,Tahun_Pajak,Nomor_Bukti_Potong,Tanggal_Bukti_Potong",
-    `${npwpPemotong},${namaPemotong},${formData.npwp || "009876543210987"},${formData.nama || "NAMA PENERIMA"},${kodeObjek},${jumlahBruto},${tarif},${pphDipotong},${bulan || "01"},${tahun || "2026"},${formData.nomor || "001/${docType === 'pph21' ? 'PPH21' : 'PPH23'}/${bulan || '01'}/${tahun || '2026'}},${new Date().toISOString().split('T')[0]}`
+    `${npwpPemotong},${namaPemotong},${formData.npwp || "009876543210987"},${formData.nama || "NAMA PENERIMA"},${kodeObjek},${jumlahBruto},${tarif},${pphDipotong},${bln},${thn},${nomorBukti},${tanggalBukti}`
   ].join("\n")
   
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
