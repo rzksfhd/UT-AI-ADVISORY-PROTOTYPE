@@ -1,19 +1,10 @@
 # Cloudflare Pages Configuration
-# This file configures the build for Cloudflare Pages
+# This file configures the deployment for Cloudflare Pages
 
 name = "ai-advisory"
+main = ""
 compatibility_date = "2024-04-07"
 
-# Build configuration for Pages
-[build]
-command = "npm run build"
-output_directory = "dist"
-
-# Environment variables
-[build.environment]
-NODE_VERSION = "18"
-
-# Note: Cloudflare Pages will auto-detect Next.js and may use @opennextjs/cloudflare
-# To avoid version issues, ensure you use:
-# - next.config.js with output: 'export'
-# - distDir: 'dist'
+# Assets configuration for static site (Next.js export)
+[assets]
+directory = "./dist"
