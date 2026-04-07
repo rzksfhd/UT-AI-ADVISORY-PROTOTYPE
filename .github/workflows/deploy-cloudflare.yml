@@ -1,0 +1,48 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Update config for Cloudflare Pages
+        run: |
+          # Remove basePath for Cloudflare Pages (clean URLs)
+          sed -i "s|basePath: '/UT-AI-ADVISORY-PROTOTYPE'|// basePath: '/UT-AI-ADVISORY-PROTOTYPE'|g" next.config.js
+          sed -i "s|// basePath: ''|basePath: ''|g" next.config.js
+          cat next.config.js
+        
+      - name: Build
+        run: npm run build
+        
+      - name: Add .nojekyll
+        run: touch ./dist/.nojekyll
+        
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: ut-ai-advisory
+          directory: dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
