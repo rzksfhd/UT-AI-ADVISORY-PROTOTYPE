@@ -3,13 +3,17 @@ const nextConfig = {
   output: 'export',
   distDir: 'dist',
   
-  // CONFIG FOR GITHUB PAGES (with basePath)
-  // Uncomment for GitHub Pages deployment:
-  basePath: '/UT-AI-ADVISORY-PROTOTYPE',
+  // ===========================================
+  // CONFIGURATION FOR CLOUDFLARE PAGES
+  // Clean URLs without basePath
+  // ===========================================
+  basePath: '',
   
-  // CONFIG FOR CLOUDFLARE PAGES (clean URLs)
-  // Uncomment for Cloudflare Pages deployment:
-  // basePath: '',
+  // ===========================================
+  // ALTERNATIVE: GitHub Pages Config
+  // Uncomment below and comment above for GitHub:
+  // basePath: '/UT-AI-ADVISORY-PROTOTYPE',
+  // ===========================================
   
   images: {
     unoptimized: true,
