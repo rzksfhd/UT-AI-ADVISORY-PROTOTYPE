@@ -4,15 +4,15 @@ const nextConfig = {
   distDir: 'dist',
   
   // ===========================================
-  // CONFIGURATION FOR CLOUDFLARE PAGES
-  // Clean URLs without basePath
+  // GITHUB PAGES CONFIG (Required!)
+  // Must match repository name exactly
   // ===========================================
-  basePath: '',
+  basePath: '/UT-AI-ADVISORY-PROTOTYPE',
   
   // ===========================================
-  // ALTERNATIVE: GitHub Pages Config
-  // Uncomment below and comment above for GitHub:
-  // basePath: '/UT-AI-ADVISORY-PROTOTYPE',
+  // ALTERNATIVE: Cloudflare Pages Config
+  // Uncomment below for Cloudflare (no basePath needed)
+  // basePath: '',
   // ===========================================
   
   images: {
